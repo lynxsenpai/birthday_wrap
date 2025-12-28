@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Birthday Wrapped 💜</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(180deg, #e6d9ff, #f7f2ff);
+    color: #4b3b6b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .slider {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+  }
+  .card {
+    display: none;
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(155,120,200,0.3);
+  }
+  img {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-top: 20px;
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  button {
+    background: #d6c4ff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #4b3b6b;
+  }
+
+/* Floating cats */
+.floating-cat {
+  position: absolute;
+  width: 80px; /* increased from 60px to 80px */
+  cursor: pointer;
+  animation: float 6s ease-in-out infinite alternate;
+  z-index: 10;
+}
+.floating-cat img {
+  width: 100%; /* keeps the image filling the container */
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+.cat-bubble {
+  position: absolute;
+  bottom: 70px;
+  left: -20px;
+  background: #fff;
+  border: 2px solid #d6c4ff;
+  border-radius: 15px;
+  padding: 10px 20px; /* increased padding for larger size */
+  font-size: 1.2em; /* increased font size */
+  display: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+  /* Gojo peek-a-boo */
+  .gojo-peek {
+    position: absolute;
+    width: 100px;
+    opacity: 0;
+    transition: opacity 0.5s;
+    cursor: pointer;
+    z-index: 20;
+  }
+  @keyframes floatGojo {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  .gojo-peek.floating {
+    animation: floatGojo 3s ease-in-out infinite;
+  }
+
+  /* Mini artwork slideshow */
+  .art-slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+  }
+  .art-slide {
+    display: none;
+    width: 100%;
+    border-radius: 15px;
+  }
+
+  /* Bouncy reaction images slideshow */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  .reaction-slide {
+    display: none;
+    width: 80px;
+    border-radius: 10px;
+    margin: 0 auto; /* Center horizontally */
+    animation: bounce 2s ease-in-out infinite; /* Slower bounce (2s) */
+  }
+  #reactionSlideshow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* New Dog slideshow styling */
+  .dog-slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(155, 120, 200, 0.3);
+  }
+
+  .dog-slide {
+    display: none;
+    width: 100%;
+  }
+
+  .dog-card img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  /* Sparkle animation */
+  @keyframes sparkle {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 0; }
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle 1s ease-out forwards;
+  }
+  #card3 img {
+    border-radius: 0;  /* Remove any rounding to make the image rectangular */
+    width: 100%;       /* Make sure the image is fully stretched within the card */
+    height: auto;      /* Maintain the aspect ratio */
+  }
+.dog-slide {
+  width: 100%; /* or specify a fixed width like 300px */
+  height: auto; /* maintains aspect ratio */
+  display: block; /* removes small gaps below images */
+  object-fit: contain; /* ensures the entire image fits inside the container without distortion */
+  border-radius: 0; /* removes any oval shape if set elsewhere */
+}
+</style>
+</head>
+<body>
+
+<!-- Floating Cats -->
+<div class="floating-cat" style="top:20%; left:25%;">
+  <img src="https://i.ibb.co/q3MmpsYT/5b38d6aa1993e0bc69d0142df6340b60-removebg-preview.png" alt="5b38d6aa1993e0bc69d0142df6340b60 removebg preview" />
+  <div class="cat-bubble">daijoubu desho datte kimi yowai mo</div>
+</div>
+
+<div class="floating-cat" style="top:50%; left:70%;">
+  <img src="https://i.ibb.co/jkSLN83H/Screenshot-2025-12-28-at-23-41-11-Chubby-Cat-Meme-Sticker-Cute-Illustration-Vector-Cat-Clipart-Cute.png" alt="Screenshot 2025 12 28 at 23 41 11 Chubby Cat Meme Sticker Cute Illustration Vector Cat Clipart Cute" />
+  <div class="cat-bubble">HAPPY BIRTHDAY!</div>
+</div>
+
+<div class="floating-cat" style="top:70%; left:30%;">
+  <img src="https://i.ibb.co/h1rSvrd3/Screenshot-2025-12-28-at-23-42-53-Salute-Cat-Meme-Sticker-Vector-Cute-Illustration-Paint-Memes-Stick.png" alt="Screenshot 2025 12 28 at 23 42 53 Salute Cat Meme Sticker Vector Cute Illustration Paint Memes Stick" />
+  <div class="cat-bubble">Have a purr-fect day!</div>
+</div>
+
+<!-- Gojo Peek-a-boo -->
+  <img src="https://i.ibb.co/4Z3p7Gpt/satoru-gojo-7.png" class="gojo-peek" style="top:10%; left:10%;">
+</a>
+  <img src="https://i.ibb.co/rRwVn77C/images-removebg-preview.png" class="gojo-peek" style="top:10%; right:10%;">
+</a>
+  <img src="https://i.ibb.co/tPCZrXNX/4a5c051ed95beb4be5ca4b4225e990a2-removebg-preview.png" class="gojo-peek" style="bottom:10%; left:10%;">
+</a>
+   <img src="https://i.ibb.co/JR0PrgJN/Gojo-PNG-Transparent.png" class="gojo-peek" style="bottom:10%; right:10%;">
+</a>
+<div class="slider">
+  <!-- Cards -->
+  <div class="card" id="card1">
+    <h1>🎉 Happy Birthday YUBIIYUBIIIIIIII💜</h1>
+    <p>Welcome to your very own wrapped(kinda)✨ Made just for you!!!!!!</p>
+  </div>
+  <div class="card" id="card2">
+  <h2>💖 Our Friendship Began</h2>
+  <p>We first started talking on April 9, 2023 💫</p>
+  <p>This was your first profile picture! 😝</p>
+    <img src="https://i.ibb.co/DPDqcp8x/Whats-App-Image-2025-12-28-at-10-31-30-PM.jpg" alt="Your first PFP" border="0">
+  </a>
+</div>
+
+  <div class="card" id="card3">
+    <h2>💙❤️ Officially No.1 Gojo Simp 👆</h2>
+    <p> <b>Gojo Satoru 🔵🫸🫷🔴🤞🤌🫴🟣</b> 😌</p>
+    <img src="https://i.ibb.co/C550yckj/Whats-App-Image-2025-12-28-at-10-39-41-PM.jpg" alt="Gojo Satoru" border="0">
+  </a>
+  </div>
+<div class="card" id="card5">
+  <h2>🏆 Favorite Artist Award!</h2>
+  <p>Guess who my favorite drawing artist is? 🤔🤔🤔🤔</p>
+  <p>Of course… it's you!! 🫰✨</p>
+  <p>Your art always amazes me, and I wanted to celebrate it today!</p>
+
+  <!-- Artwork Slideshow -->
+  <div class="art-slideshow" id="artSlideshow5">
+    <!-- Updated Artworks -->
+      <img src="https://i.ibb.co/Txjvp64p/Whats-App-Image-2025-12-28-at-10-47-46-PM.jpg" alt="Your Artwork 1" class="art-slide" />
+    </a>
+      <img src="https://i.ibb.co/r2G9hzJc/Whats-App-Image-2025-12-28-at-10-47-46-PM-1.jpg" alt="Your Artwork 2" class="art-slide" />
+    </a>
+      <img src="https://i.ibb.co/N63yXsKc/Whats-App-Image-2025-12-28-at-10-48-35-PM.jpg" alt="Your Artwork 3" class="art-slide" />
+    </a>
+      <img src="https://i.ibb.co/9mXrRpgw/Whats-App-Image-2025-12-28-at-10-50-11-PM.jpg" alt="Your Artwork 4" class="art-slide" />
+    </a>
+  </div>
+</div>
+
+  <!-- New Reaction Images Card -->
+<div class="card" id="card7">
+  <h2>😍 Favorite Reaction Images!</h2>
+  <p>We do use a lot of reaction images, but here are my favorites that you often use:</p>
+  <div class="reaction-slideshow" id="reactionSlideshow">
+    <!-- Your first image -->
+      <img src="https://i.ibb.co/ghkz0XZ/Whats-App-Image-2025-12-28-at-11-00-49-PM.jpg" alt="Whats App Image 2025 12 28 at 11 00 49 PM" class="reaction-slide" />
+    </a>
+    <!-- Your second image -->
+      <img src="https://i.ibb.co/7NW1NVD9/Whats-App-Image-2025-12-28-at-11-00-49-PM-1.jpg" alt="Whats-App-Image 2025 12 28 at 11 00 49 PM-1" class="reaction-slide" />
+    </a>
+  </div>
+</div>
+  <!-- New Ryo Card -->
+<div class="card" id="card8">
+  <h2>🐶 Ryo, Our Favorite Doggo</h2>
+  <p><strong>Ryo Earlier</strong></p>
+  <div class="dog-slideshow" id="babyPicsSlideshow">
+    <!-- Your baby pics -->
+      <img src="https://i.ibb.co/prRVTXCN/Whats-App-Image-2025-12-28-at-11-22-43-PM.jpg" alt="Whats-App-Image-2025-12-28-at-11-22-43-PM" class="dog-slide" />
+    </a>
+      <img src="https://i.ibb.co/sSTzkgn/Whats-App-Image-2025-12-28-at-11-22-43-PM-1.jpg" alt="Whats-App-Image-2025-12-28-at-11-22-43-PM-1" class="dog-slide" />
+    </a>
+  </div>
+  <p><strong>Ryo Now</strong></p>
+  <div class="dog-slideshow" id="adultPicsSlideshow">
+    <!-- Your adult pics -->
+      <img src="https://i.ibb.co/mVD7jSkB/Whats-App-Image-2025-12-28-at-11-23-46-PM.jpg" alt="Whats App Image 2025 12 28 at 11 23 46 PM" class="dog-slide" />
+    </a>
+      <img src="https://i.ibb.co/bgRcQ32z/Whats-App-Image-2025-12-28-at-11-23-46-PM-1.jpg" alt="Whats-App-Image 2025-12-28-at-11-23-46-PM-1" class="dog-slide" />
+    </a>
+  </div>
+</div>
+
+  <!-- A Little Message Card (Moved to the end) -->
+  <div class="card" id="card4">
+    <h2>💌 A Little Message</h2>
+    <p>ALWAYS GRATEFUL TO HAVE U AS A FRIEND TWIN you da best fr fr no words can describe how important u are for me and this my first time making a website btw so kuch bhool hogyi ho toh maaf kardena but i really hope u liked it !!</p>
+  </div>
+
+  <!-- Navigation buttons -->
+  <div class="buttons">
+    <button id="prev">◀ Prev</button>
+    <button id="next">Next ▶</button>
+  </div>
+</div>
+
+<script>
+// Existing JavaScript code...
+let current = 0;
+const cards = document.querySelectorAll('.card');
+let slideshowInterval;
+
+// Function to show current card
+function showSlide(index) {
+  cards.forEach((card, i) => {
+    card.style.display = (i === index) ? 'block' : 'none';
+  });
+  // Start slideshow for Ryo's baby and adult pics
+  if (cards[index].id === 'card8') {
+    startDogSlideshow('babyPicsSlideshow', 'adultPicsSlideshow');
+  } else if (cards[index].id === 'card7') {
+    startReactionSlideshow();
+  } else if (cards[index].id === 'card5') {
+    startArtworkSlideshow();  // Start artwork slideshow
+  } else {
+    clearInterval(slideshowInterval);
+  }
+}
+
+// Start Artwork Slideshow
+function startArtworkSlideshow() {
+  const slides = document.querySelectorAll('.art-slide');
+  let index = 0;
+  if (slides.length === 0) return;
+
+  slides.forEach(s => s.style.display = 'none');
+  slides[0].style.display = 'block';
+
+  clearInterval(slideshowInterval);
+  slideshowInterval = setInterval(() => {
+    slides.forEach(s => s.style.display = 'none');
+    slides[index].style.display = 'block';
+    index = (index + 1) % slides.length;
+  }, 2000);  // 2 seconds for each artwork image
+}
+
+// Initial card
+showSlide(current);
+
+// Next / Prev buttons
+document.getElementById('next').addEventListener('click', () => {
+  showSparkles(); // Show sparkles on Next
+  current = (current + 1) % cards.length;
+  showSlide(current);
+});
+
+document.getElementById('prev').addEventListener('click', () => {
+  showSparkles(); // Show sparkles on Prev
+  current = (current - 1 + cards.length) % cards.length;
+  showSlide(current);
+});
+
+// Function to show sparkles
+function showSparkles() {
+  const sparkleCount = 30; // Number of sparkles
+  for (let i = 0; i < sparkleCount; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    document.body.appendChild(sparkle);
+
+    // Random position for each sparkle
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    sparkle.style.left = `${x}px`;
+    sparkle.style.top = `${y}px`;
+
+    // Remove sparkle after animation completes
+    setTimeout(() => {
+      sparkle.remove();
+    }, 1000);
+  }
+
+  // Trigger confetti
+  confetti({
+    particleCount: 150,
+    spread: 70,
+    origin: { x: 0.5, y: 0.5 },
+  });
+}
+
+// Floating cat bubbles
+document.querySelectorAll('.floating-cat').forEach(cat => {
+  cat.addEventListener('click', () => {
+    const bubble = cat.querySelector('.cat-bubble');
+    bubble.style.display = (bubble.style.display === 'block') ? 'none' : 'block';
+  });
+});
+
+// Gojo peek-a-boo
+const gojos = document.querySelectorAll('.gojo-peek');
+function peekGojo() {
+  gojos.forEach(gojo => {
+    setTimeout(() => {
+      gojo.style.opacity = 1;
+      gojo.classList.add('floating');
+      setTimeout(() => {
+        gojo.style.opacity = 0;
+        gojo.classList.remove('floating');
+      }, 2000);
+    }, Math.random() * 5000);
+  });
+}
+setInterval(peekGojo, 6000);
+peekGojo();
+</script>
+<script>
+  function startReactionSlideshow() {
+    const slides = document.querySelectorAll('.reaction-slide');
+    let index = 0;
+    // Hide all slides initially
+    slides.forEach(s => s.style.display = 'none');
+    if (slides.length === 0) return;
+    slides[0].style.display = 'block';
+
+    // Clear previous interval if any
+    clearInterval(slideshowInterval);
+    slideshowInterval = setInterval(() => {
+      slides.forEach(s => s.style.display = 'none');
+      slides[index].style.display = 'block';
+      index = (index + 1) % slides.length;
+    }, 2000);
+  }
+</script>
+<script>
+  function startDogSlideshow(slideshowId) {
+    const slides = document.querySelectorAll(`#${slideshowId} .dog-slide`);
+    let index = 0;
+    // Hide all slides initially
+    slides.forEach(slide => (slide.style.display = 'none'));
+    if (slides.length === 0) return;
+    slides[0].style.display = 'block';
+
+    // Clear previous interval if any
+    clearInterval(window[slideshowId + "_interval"]);
+    window[slideshowId + "_interval"] = setInterval(() => {
+      slides.forEach(slide => (slide.style.display = 'none'));
+      slides[index].style.display = 'block';
+      index = (index + 1) % slides.length;
+    }, 3000); // change every 3 seconds
+  }
+
+  // Call this function on page load or when your card is shown
+  window.onload = () => {
+    startDogSlideshow('babyPicsSlideshow');
+    startDogSlideshow('adultPicsSlideshow');
+  };
+</script>
+
+</body>
+</html>
